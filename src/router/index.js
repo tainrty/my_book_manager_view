@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 
 Vue.use(VueRouter)
 
@@ -11,9 +10,9 @@ const routes = [
   //   component: HomeView
   // },
   {
-    path: '/people',
-    name: 'people',
-    component: () => import('../views/people.vue')
+    path: '/user',
+    name: 'user',
+    component: () => import('../views/user/user.vue')
   }
 ]
 

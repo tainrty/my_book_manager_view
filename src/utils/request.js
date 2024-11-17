@@ -1,42 +1,31 @@
-// src/utils/request.js
-import axios from 'axios';
-
-// 创建 axios 实例
-const request = axios.create({
-  baseURL: 'http://localhost:9090', // 这里可以改成你的后端接口地址
-  timeout: 5000, // 请求超时的时间
-});
-
-// 请求拦截器
-request.interceptors.request.use(
-  config => {
-    // 在请求发送之前做一些处理，比如加入 Token
-    // 例如：config.headers['Authorization'] = 'Bearer ' + token
-    config.headers['Content-Type']='application/json;charset=utf-8';
-    return config;
-  },
-  error => {
-    // 请求错误处理
-    return Promise.reject(error);
-  }
-);
-
-// 响应拦截器
 request.interceptors.response.use(
   response => {
-    let res=response.data;
-    if(typeof res==='string'){//如果返回的是字符串进行解析
-        res=res?JSON.parse(res):res
+    let res = response.data;
+
+    // 如果返回的是字符串（例如 "删除成功"），并且不是有效的 JSON
+    if (typeof res === 'string') {
+      try {
+        res = JSON.parse(res); // 尝试解析为 JSON
+      } catch (e) {
+        // 如果解析失败，就认为它是正常的成功响应消息
+        res = {
+          code: '200',  // 设置为成功码
+          message: res  // 将字符串作为消息
+        };
+      }
     }
-    return res;
-    // 对响应数据进行处理
-    return response.data; // 这里可以直接返回后台数据（去掉外层的 {data: xxx}）
+
+    // 确保返回的结构符合前端的处理逻辑
+    if (res.code === '200') {
+      return res; // 请求成功，返回数据
+    } else {
+      console.error('请求失败:', res.message || '未知错误');
+      return Promise.reject(res.message || '未知错误');
+    }
   },
   error => {
     // 响应错误处理
-    console.error('err'+error);
+    console.error('请求错误:', error);
     return Promise.reject(error);
   }
 );
-
-export default request;

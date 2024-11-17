@@ -4,11 +4,11 @@
     <el-input
       v-model="username"
       placeholder="请输入用户名"
-      style="width: 200px; margin-bottom: 20px;"
+      style="width: 400px; margin-bottom: 20px;margin-right:20px"
       clearable
     />
-    <el-button @click="onSearch" type="primary" icon="el-icon-search" style="margin-bottom: 20px;">搜索</el-button>
-
+    <el-button @click="onSearch" type="primary" icon="el-icon-search" style="margin-right:20px;">搜索</el-button>
+    <el-button @click="reset" type="danger" icon="el-icon-refresh" style="margin-bottom: 20px;margin-right:20px">重置</el-button>
     <!-- 用户表格 -->
     <el-table
       :data="tableData.records"
@@ -67,6 +67,7 @@ export default {
   },
 
   methods: {
+  
     // 表格行样式
     tableRowClassName({ rowIndex }) {
       if (rowIndex === 1) {
@@ -75,6 +76,12 @@ export default {
         return 'success-row';
       }
       return '';
+    },
+    reset() {
+      this.username = '';  // 清空搜索框中的用户名
+      this.pageNum = 1;    // 重置页码为1
+      this.pageSize = 10;  // 重置每页显示条数
+      this.getUserPage();  // 重新获取数据，加载第一页
     },
 
     // 搜索功能

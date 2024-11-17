@@ -14,7 +14,8 @@
       <div style="width: 200px; background-color: #f4f4f4;">
         <el-menu :default-active="$route.path" router class="el-menu-demo">
           <el-menu-item index="/">首页</el-menu-item>
-          <el-menu-item index="/people">人员管理</el-menu-item>
+          <el-menu-item index="/user">人员管理</el-menu-item> 
+          
           <el-menu-item index="1">书籍管理</el-menu-item>
           <el-menu-item index="1">借阅管理</el-menu-item>
         </el-menu>
